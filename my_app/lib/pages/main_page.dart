@@ -68,7 +68,8 @@ class _MyMainPageState extends State<MyMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('персонажи Рика и Морти'),
+          title: const Text('Персонажи Рика и Морти',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

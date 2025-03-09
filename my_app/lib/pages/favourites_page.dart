@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/models/favs_provider.dart';
+import '../models/characters_model.dart';
+import 'package:my_app/components/character_item.dart';
 
 class FavouritesPage extends StatefulWidget {
   const FavouritesPage({super.key});
@@ -11,20 +13,110 @@ class FavouritesPage extends StatefulWidget {
 
 class _FavouritesPageState extends State<FavouritesPage> {
   late Future<void> _favsFuture;
+  List<Character> _sortedFavs = [];
+  String selectedSort = 'По умолчанию';
 
   @override
   void initState() {
     super.initState();
-    _favsFuture = Provider.of<FavsProvider>(context, listen: false).loadFavs();
+    final favourites = Provider.of<FavsProvider>(context, listen: false);
+    _sortedFavs = List.from(favourites.favourites);
+    _favsFuture = favourites.loadFavs();
+  }
+
+  void _openSort() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              "Сортировка",
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: ListBody(
+                  children: ['По умолчанию', 'По алфавиту'].map((sort) {
+                    return RadioListTile<String>(
+                      title: Text(
+                        sort,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      value: sort,
+                      groupValue: selectedSort,
+                      onChanged: (String? value) {
+                        setState(() {
+                          if (value != null) {
+                            selectedSort = value;
+                          }
+
+                          print(selectedSort);
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Закрыть'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _sortCharacters(selectedSort);
+
+                print(selectedSort);
+              },
+              child: Text('Применить'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _sortCharacters(String sortOpt) {
+    final favourites =
+        Provider.of<FavsProvider>(context, listen: false).favourites;
+    setState(() {
+      _sortedFavs = List.from(favourites);
+      if (selectedSort == 'По алфавиту') {
+        _sortedFavs.sort((a, b) => a.name.compareTo(b.name));
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final favourites = Provider.of<FavsProvider>(context);
+    if (_sortedFavs.isEmpty ||
+        _sortedFavs.length != favourites.favourites.length) {
+      _sortedFavs = List.from(favourites.favourites);
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Избранные персонажи'),
+        title: const Text(
+          'Избранные персонажи',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+        ),
+        actions: [
+          IconButton(
+              onPressed: _openSort,
+              icon: const Icon(
+                Icons.sort,
+                color: Color.fromRGBO(0, 174, 208, 100),
+              ))
+        ],
       ),
       body: FutureBuilder(
         future: _favsFuture,
@@ -43,54 +135,31 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
           if (favourites.favourites.isEmpty) {
             return const Center(
-              child: Text('Нет избранных персонажей'),
+              child: Text('Нет избранных персонажей',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
             );
           }
 
-          return ListView.builder(
-            itemCount: favourites.favourites.length,
-            itemBuilder: (context, index) {
-              final character = favourites.favourites[index];
-              return Card(
-                child: Column(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        favourites.toggleFavs(character);
-                      },
-                      icon: Icon(Icons.star_border),
-                    ),
-                    ClipRRect(
-                      child: Image.network(
-                        character.image,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            character.name,
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            character.status,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0),
+                itemCount: _sortedFavs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final character = _sortedFavs[index];
+                  return CharacterCard(
+                      character: character,
+                      isFavorite: favourites.isFav(character.id),
+                      onFavoriteToggle: () {
+                        Provider.of<FavsProvider>(context, listen: false)
+                            .toggleFavs(character);
+                        _sortedFavs;
+                      });
+                }),
           );
         },
       ),

@@ -16,6 +16,10 @@ class CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          side: const BorderSide(
+              width: 2, color: Color.fromRGBO(0, 174, 208, 100))),
       child: Column(
         children: [
           Expanded(
@@ -31,11 +35,14 @@ class CharacterCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(height: 15.0),
                 Text(
                   character.name,
                   style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.w700),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 5.0),
                 Text(
@@ -46,9 +53,7 @@ class CharacterCard extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     isFavorite ? Icons.star : Icons.star_border,
-                    color: isFavorite
-                        ? Color.fromRGBO(116, 255, 69, 0.808)
-                        : Color.fromRGBO(116, 255, 69, 0.808),
+                    color: const Color.fromRGBO(116, 255, 69, 0.808),
                   ),
                   onPressed: onFavoriteToggle,
                 ),

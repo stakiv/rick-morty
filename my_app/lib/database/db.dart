@@ -14,9 +14,9 @@ class DatabaseHelper {
     }
 
     // удаляем бд каждый раз при запуске (на время тестирования)
-    final dbPath = await getDatabasesPath();
+    /*final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'characters.db');
-    await deleteDatabase(path);
+    await deleteDatabase(path);*/
 
     _database = await _initDB('characters.db');
     return _database!;
@@ -76,15 +76,13 @@ CREATE TABLE fav_characters(
   Future<List<Character>> getCharactersFav() async {
     print('getCharactersFav func called');
     final db = await instance.database;
-    /*final all = await getCharacters();
-    for (var i in all) print('все персы: ${i.id}');*/
     final q = await db.query('fav_characters');
     final ids = q.map((json) => json['character_id'] as int).toList();
     for (var id in ids) print(id);
 
     if (ids.isEmpty) return [];
     final res = await db.query('characters', where: 'id IN (${ids.join(',')})');
-    print('персонажи из избранного $res');
+    //print('персонажи из избранного $res');
     return res.map((json) => Character.fromJson(json)).toList();
   }
 

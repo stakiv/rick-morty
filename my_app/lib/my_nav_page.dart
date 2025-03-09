@@ -29,12 +29,18 @@ class _MyNavigationPageState extends State<MyNavigationPage> {
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Главная"),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: "Избранное"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: "Главная"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.star_outline),
+              activeIcon: Icon(Icons.star),
+              label: "Избранное"),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: const Color.fromRGBO(0, 174, 208, 100),
-        unselectedItemColor: const Color.fromARGB(156, 106, 230, 255),
+        unselectedItemColor: const Color.fromRGBO(0, 174, 208, 100),
         onTap: _onItemTapped,
       ),
     );
