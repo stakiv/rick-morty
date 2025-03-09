@@ -71,3 +71,18 @@ Bottom navigation bar - переключение между экранами
 
 - cached_network_image — для кеширования изображений.
 
+## Скриншоты
+
+### главный экран
+<img src="https://github.com/user-attachments/assets/66680a07-2b8d-4921-ba2a-ece2b03aabe6" width="300">
+
+### экран избранного
+<img src="https://github.com/user-attachments/assets/8751ad09-a647-46f0-bcc3-74b53ff33ebc" width="300">
+
+### сортировка
+<img src="https://github.com/user-attachments/assets/9f037d51-9443-4481-bf5e-203171671b20" width="300">
+
+### иконка
+<img src="https://github.com/user-attachments/assets/c887e460-b1d5-4e24-a37e-fe8dfeea96c7" width="100">
+
+
