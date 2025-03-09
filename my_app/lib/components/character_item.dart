@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/models/characters_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CharacterCard extends StatelessWidget {
   final Character character;
@@ -16,6 +17,7 @@ class CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: const Color.fromRGBO(255, 255, 255, 1),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: const BorderSide(
@@ -25,8 +27,14 @@ class CharacterCard extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                character.image,
+              child: CachedNetworkImage(
+                imageUrl: character.image,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(
+                  Icons.error,
+                  color: Color.fromRGBO(162, 193, 199, 0.612),
+                ),
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),

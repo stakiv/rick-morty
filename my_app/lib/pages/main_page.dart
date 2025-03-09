@@ -67,6 +67,7 @@ class _MyMainPageState extends State<MyMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         appBar: AppBar(
           title: const Text('Персонажи Рика и Морти',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),

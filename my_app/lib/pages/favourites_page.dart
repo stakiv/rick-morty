@@ -29,10 +29,11 @@ class _FavouritesPageState extends State<FavouritesPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
           title: const Center(
             child: Text(
               "Сортировка",
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             ),
           ),
           content: StatefulBuilder(
@@ -53,9 +54,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                             selectedSort = value;
                           }
 
-                          print(selectedSort);
+                          //print(selectedSort);
                         });
                       },
+                      activeColor: const Color.fromRGBO(0, 174, 208, 100),
                     );
                   }).toList(),
                 ),
@@ -67,16 +69,24 @@ class _FavouritesPageState extends State<FavouritesPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Закрыть'),
+              child: const Text('Закрыть',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: Color.fromRGBO(102, 201, 221, 0.612))),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _sortCharacters(selectedSort);
 
-                print(selectedSort);
+                //print(selectedSort);
               },
-              child: Text('Применить'),
+              child: const Text('Применить',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: Color.fromRGBO(0, 174, 208, 100))),
             ),
           ],
         );
@@ -104,6 +114,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
     }
 
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
         title: const Text(
           'Избранные персонажи',
