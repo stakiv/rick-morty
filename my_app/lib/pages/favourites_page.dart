@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:my_app/models/favs_provider.dart';
 import '../models/characters_model.dart';
 import 'package:my_app/components/character_item.dart';
+import 'package:logger/logger.dart';
 
 class FavouritesPage extends StatefulWidget {
   const FavouritesPage({super.key});
@@ -15,6 +16,12 @@ class _FavouritesPageState extends State<FavouritesPage> {
   late Future<void> _favsFuture;
   List<Character> _sortedFavs = [];
   String selectedSort = 'По умолчанию';
+  final Logger _logger = Logger();
+
+  // логирование информации
+  void logInfo(String message) {
+    _logger.i(message);
+  }
 
   @override
   void initState() {
@@ -54,7 +61,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                             selectedSort = value;
                           }
 
-                          //print(selectedSort);
+                          logInfo(selectedSort);
                         });
                       },
                       activeColor: const Color.fromRGBO(0, 174, 208, 100),
@@ -80,7 +87,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                 Navigator.of(context).pop();
                 _sortCharacters(selectedSort);
 
-                //print(selectedSort);
+                logInfo(selectedSort);
               },
               child: const Text('Применить',
                   style: TextStyle(

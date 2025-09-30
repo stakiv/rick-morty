@@ -4,6 +4,7 @@ import 'package:my_app/models/api_service.dart';
 import '../models/characters_model.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/models/favs_provider.dart';
+import 'package:logger/logger.dart';
 
 class MyMainPage extends StatefulWidget {
   const MyMainPage({super.key});
@@ -17,6 +18,7 @@ class _MyMainPageState extends State<MyMainPage> {
   bool isLoading = false; // отображение загрузки
   bool checkMore = true; // есть ли дальше страницы
   int currPage = 1; // номер актуальной страницы
+  final Logger _logger = Logger();
 
   final ScrollController _scrollController = ScrollController();
 
@@ -31,6 +33,11 @@ class _MyMainPageState extends State<MyMainPage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  // логирование информации
+  void logInfo(String message) {
+    _logger.i(message);
   }
 
   // получение персонажей
@@ -48,7 +55,7 @@ class _MyMainPageState extends State<MyMainPage> {
         checkMore = fetchedCharacters.isNotEmpty;
       });
     } catch (e) {
-      print('Error: $e');
+      logInfo('Error: $e');
     } finally {
       setState(() {
         isLoading = false;

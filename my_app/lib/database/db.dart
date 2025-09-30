@@ -1,10 +1,12 @@
 import 'package:my_app/models/characters_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:logger/logger.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
   static Database? _database;
+  final Logger _logger = Logger();
 
   DatabaseHelper._init();
 
@@ -45,9 +47,14 @@ CREATE TABLE fav_characters(
     ''');
   }
 
+  // логирование информации
+  void logInfo(String message) {
+    _logger.i(message);
+  }
+
   // добавление персонажа
   Future<int> addCharacter(Character character) async {
-    print('addCharacter func called, character.id=${character.id}');
+    logInfo('addCharacter func called, character.id=${character.id}');
     final db = await instance.database;
     return await db.insert('characters', character.toJson(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
@@ -55,54 +62,56 @@ CREATE TABLE fav_characters(
 
   // добавление персонажа в избранное
   Future<int> addCharacterToFavs(int id) async {
-    print('addCharacterToFavs func called, character.id=${id}');
+    logInfo('addCharacterToFavs func called, character.id=$id');
     final db = await instance.database;
     final res = await db.insert('fav_characters', {'character_id': id},
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    print('result: $res');
+    logInfo('result: $res');
     return res;
   }
 
   // получене персонажей
   Future<List<Character>> getCharacters() async {
-    print('getCharacters func called');
+    logInfo('getCharacters func called');
     final db = await instance.database;
     final res = await db.query('characters');
-    print('все персонажи $res');
+    logInfo('все персонажи $res');
     return res.map((json) => Character.fromJson(json)).toList();
   }
 
   // получене избранных персонажей
   Future<List<Character>> getCharactersFav() async {
-    print('getCharactersFav func called');
+    logInfo('getCharactersFav func called');
     final db = await instance.database;
     final q = await db.query('fav_characters');
     final ids = q.map((json) => json['character_id'] as int).toList();
-    for (var id in ids) print(id);
+    for (var id in ids) {
+      logInfo('$id');
+    }
 
     if (ids.isEmpty) return [];
     final res = await db.query('characters', where: 'id IN (${ids.join(',')})');
-    //print('персонажи из избранного $res');
+    logInfo('персонажи из избранного $res');
     return res.map((json) => Character.fromJson(json)).toList();
   }
 
   Future<List<Map<String, dynamic>>> getFavs() async {
     final db = await instance.database;
     final res = await db.query('fav_characters');
-    print('fav_characters: $res');
+    logInfo('fav_characters: $res');
     return res;
   }
 
   // удаление персонажа
   Future<int> removeCharacter(int id) async {
-    print('removeCharacter func called, character.id=${id}');
+    logInfo('removeCharacter func called, character.id=$id');
     final db = await instance.database;
     return await db.delete('characters', where: 'id = ?', whereArgs: [id]);
   }
 
   // удаление персонажа из избранного
   Future<int> removeCharacterFromFavs(int id) async {
-    print('removeCharacterFromFavs func called, character.id=${id}');
+    logInfo('removeCharacterFromFavs func called, character.id=$id');
     final db = await instance.database;
     return await db
         .delete('fav_characters', where: 'character_id = ?', whereArgs: [id]);

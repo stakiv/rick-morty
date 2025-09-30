@@ -2,9 +2,17 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:my_app/database/db.dart';
 import 'characters_model.dart';
+import 'package:logger/logger.dart';
 
 class ApiService {
   final Dio _dio = Dio(BaseOptions(baseUrl: 'https://rickandmortyapi.com/api'));
+  final Logger _logger = Logger();
+
+  // логирование информации
+  void logInfo(String message) {
+    _logger.i(message);
+  }
+
 //получение списка персонажей
   Future<List<Character>> getCharacters({int page = 1}) async {
     final db = DatabaseHelper.instance;
@@ -24,7 +32,7 @@ class ApiService {
       }
     } catch (e) {
       // если нет сети, загружаем сохраненные данные
-      print('load local data');
+      logInfo('load local data');
       return await db.getCharacters();
       //throw Exception('Error fetching characters: $e');
     }
