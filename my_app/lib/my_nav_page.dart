@@ -32,11 +32,11 @@ class _MyNavigationPageState extends State<MyNavigationPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               activeIcon: Icon(Icons.home),
-              label: "Главная"),
+              label: 'Главная'),
           BottomNavigationBarItem(
               icon: Icon(Icons.star_outline),
               activeIcon: Icon(Icons.star),
-              label: "Избранное"),
+              label: 'Избранное'),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: const Color.fromRGBO(0, 174, 208, 100),

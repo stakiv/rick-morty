@@ -11,3 +11,25 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+
+# Android related
+/android/.gradle/
+/android/app/.cxx/
+/android/app/build/
+/android/build/
+
+# Flutter/Dart related
+.dart_tool/
+/build/
+/.packages
+.pub/
+/.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+
+# IDE related
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws

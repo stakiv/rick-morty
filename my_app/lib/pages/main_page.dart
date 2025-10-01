@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/components/character_item.dart';
 import 'package:my_app/models/api_service.dart';
+import 'package:my_app/models/characters_repository.dart';
 import '../models/characters_model.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/models/favs_provider.dart';
 import 'package:logger/logger.dart';
+import 'package:my_app/models/characters_repository.dart';
 
 class MyMainPage extends StatefulWidget {
   const MyMainPage({super.key});
@@ -16,15 +18,21 @@ class MyMainPage extends StatefulWidget {
 class _MyMainPageState extends State<MyMainPage> {
   List<Character> _characters = [];
   bool isLoading = false; // отображение загрузки
-  bool checkMore = true; // есть ли дальше страницы
+  bool checkMorePages = true; // есть ли дальше страницы
   int currPage = 1; // номер актуальной страницы
   final Logger _logger = Logger();
 
   final ScrollController _scrollController = ScrollController();
 
+  late CharactersRepository charactersRepository;
+  late ApiService apiService;
+
   @override
   void initState() {
     super.initState();
+    apiService = Provider.of<ApiService>(context, listen: false);
+    charactersRepository =
+        Provider.of<CharactersRepository>(context, listen: false);
     _getCharacters();
     _scrollController.addListener(_scrollListener);
   }
@@ -42,17 +50,17 @@ class _MyMainPageState extends State<MyMainPage> {
 
   // получение персонажей
   Future<void> _getCharacters() async {
-    if (isLoading || !checkMore) return;
+    if (isLoading || !checkMorePages) return;
     setState(() {
       isLoading = true;
     });
     try {
       final fetchedCharacters =
-          await ApiService().getCharacters(page: currPage);
+          await charactersRepository.getCharacters(page: currPage);
       setState(() {
         _characters.addAll(fetchedCharacters);
         currPage++;
-        checkMore = fetchedCharacters.isNotEmpty;
+        checkMorePages = fetchedCharacters.isNotEmpty;
       });
     } catch (e) {
       logInfo('Error: $e');

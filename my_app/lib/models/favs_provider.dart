@@ -14,7 +14,7 @@ class FavsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // удалегие или добавление персонажей в избранное
+  // удаление или добавление персонажей в избранное
   Future<void> toggleFavs(Character character) async {
     final db = DatabaseHelper.instance;
     if (_favs.any((fav) => fav.id == character.id)) {

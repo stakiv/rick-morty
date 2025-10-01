@@ -39,7 +39,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
           backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
           title: const Center(
             child: Text(
-              "Сортировка",
+              'Сортировка',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             ),
           ),
