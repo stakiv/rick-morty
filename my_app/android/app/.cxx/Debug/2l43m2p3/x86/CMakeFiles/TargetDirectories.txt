@@ -1,2 +1,0 @@
-C:/Users/Viktoria/Documents/GitHub/rick-morty/my_app/android/app/.cxx/Debug/2l43m2p3/x86/CMakeFiles/edit_cache.dir
-C:/Users/Viktoria/Documents/GitHub/rick-morty/my_app/android/app/.cxx/Debug/2l43m2p3/x86/CMakeFiles/rebuild_cache.dir
