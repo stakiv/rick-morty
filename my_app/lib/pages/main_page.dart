@@ -6,7 +6,6 @@ import '../models/characters_model.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/models/favs_provider.dart';
 import 'package:logger/logger.dart';
-import 'package:my_app/models/characters_repository.dart';
 
 class MyMainPage extends StatefulWidget {
   const MyMainPage({super.key});
@@ -16,7 +15,7 @@ class MyMainPage extends StatefulWidget {
 }
 
 class _MyMainPageState extends State<MyMainPage> {
-  List<Character> _characters = [];
+  final List<Character> _characters = [];
   bool isLoading = false; // отображение загрузки
   bool checkMorePages = true; // есть ли дальше страницы
   int currPage = 1; // номер актуальной страницы
@@ -90,7 +89,7 @@ class _MyMainPageState extends State<MyMainPage> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification) {
+            onNotification: (scrollNotification) {
               if (ScrollNotification is ScrollUpdateNotification &&
                   _scrollController.position.pixels ==
                       _scrollController.position.maxScrollExtent) {
